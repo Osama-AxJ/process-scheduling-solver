@@ -6,19 +6,12 @@ export const npp = (
   priorities: number[]
 ) => {
   const processesInfo = arrivalTime
-    .map((item, index) => {
-      const job =
-        arrivalTime.length > 26
-          ? `P${index + 1}`
-          : (index + 10).toString(36).toUpperCase();
-
-      return {
-        job,
-        at: item,
-        bt: burstTime[index],
-        priority: priorities[index],
-      };
-    })
+  .map((item, index) => ({
+           job: `P${index}`,
+           at: item,
+           bt: burstTime[index],
+           priority: priorities[index],
+       }))
     .sort((process1, process2) => {
       if (process1.at > process2.at) return 1;
       if (process1.at < process2.at) return -1;
