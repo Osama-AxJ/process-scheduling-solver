@@ -1,4 +1,4 @@
-import { solvedProcessesInfoType, ganttChartInfoType } from '.';
+import { SolvedProcessesInfoType, GanttChartInfoType } from '.';
 
 export const pp = (
     arrivalTime: number[],
@@ -20,11 +20,11 @@ export const pp = (
             return 0;
         });
 
-    const solvedProcessesInfo: solvedProcessesInfoType = [];
-    const ganttChartInfo: ganttChartInfoType = [];
+    const solvedProcessesInfo: SolvedProcessesInfoType = [];
+    const ganttChartInfo: GanttChartInfoType = [];
 
     const readyQueue: {
-        job: string;
+        job: number;
         at: number;
         bt: number;
         priority: number;

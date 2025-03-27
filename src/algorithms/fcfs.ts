@@ -1,4 +1,4 @@
-import { ganttChartInfoType } from '.';
+import { GanttChartInfoType } from '.';
 
 export const fcfs = (arrivalTime: number[], burstTime: number[]) => {
   const processesInfo = arrivalTime
@@ -18,7 +18,7 @@ export const fcfs = (arrivalTime: number[], burstTime: number[]) => {
     });
 
   let finishTime: number[] = [];
-  let ganttChartInfo: ganttChartInfoType = [];
+  let ganttChartInfo: GanttChartInfoType = [];
 
   const solvedProcessesInfo = processesInfo.map((process, index) => {
     if (index === 0 || process.at > finishTime[index - 1]) {

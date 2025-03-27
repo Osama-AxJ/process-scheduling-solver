@@ -1,4 +1,4 @@
-import { ganttChartInfoType } from '.';
+import { GanttChartInfoType } from '.';
 
 export const sjf = (arrivalTime: number[], burstTime: number[]) => {
     const processesInfo = arrivalTime
@@ -16,7 +16,7 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
         });
 
     let finishTime: number[] = [];
-    let ganttChartInfo: ganttChartInfoType = [];
+    let ganttChartInfo: GanttChartInfoType = [];
 
     const solvedProcessesInfo = [];
     const readyQueue = [];

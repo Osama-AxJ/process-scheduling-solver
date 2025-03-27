@@ -1,4 +1,4 @@
-import { ganttChartInfoType } from '.';
+import { GanttChartInfoType } from '.';
 
 export const srtf = (arrivalTime: number[], burstTime: number[]) => {
     const processesInfo = arrivalTime
@@ -17,7 +17,7 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
         });
 
     const solvedProcessesInfo = [];
-    const ganttChartInfo: ganttChartInfoType = [];
+    const ganttChartInfo: GanttChartInfoType = [];
 
     const readyQueue = [];
     let currentTime = processesInfo[0].at;

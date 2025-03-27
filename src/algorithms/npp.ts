@@ -1,4 +1,4 @@
-import { ganttChartInfoType } from '.';
+import { GanttChartInfoType } from '.';
 
 export const npp = (
     arrivalTime: number[],
@@ -21,7 +21,7 @@ export const npp = (
         });
 
     let finishTime: number[] = [];
-    let ganttChartInfo: ganttChartInfoType = [];
+    let ganttChartInfo: GanttChartInfoType = [];
 
     const solvedProcessesInfo = [];
     const readyQueue = [];
