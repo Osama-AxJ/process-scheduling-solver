@@ -15,8 +15,8 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
             return 0;
         });
 
-    let finishTime: number[] = [];
-    let ganttChartInfo: GanttChartInfoType = [];
+    const finishTime: number[] = [];
+    const ganttChartInfo: GanttChartInfoType = [];
 
     const solvedProcessesInfo = [];
     const readyQueue = [];
