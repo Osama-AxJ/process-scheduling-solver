@@ -81,17 +81,22 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
     const [windowWidth, setWindowWidth] = useState(null);
     const [containerWidth, setContainerWidth] = useState(null);
 
-    const job: number[] = [];
+    const jobs: number[] = [];
+    const lastJobIndex: { [key: number]: number } = {};
+
     const time: number[] = [];
+    const BLANK_CELL = -1
     ganttChartInfo.forEach((item, index) => {
         if (index === 0) {
-            job.push(item.job);
+            jobs.push(item.job);
             time.push(item.start, item.stop);
+            lastJobIndex[item.job] = index
         } else if (time.slice(-1)[0] === item.start) {
-            job.push(item.job);
+            jobs.push(item.job);
             time.push(item.stop);
+            lastJobIndex[item.job] = index
         } else if (time.slice(-1)[0] !== item.start) {
-            // job.push('_', item.job);
+            jobs.push(BLANK_CELL, item.job);
             time.push(item.start, item.stop);
         }
     });
@@ -155,11 +160,19 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                     <JobContainer>
                                         {Array.from({
                                             length: lastLineItemCount - 1,
-                                        }).map((_, i) => (
-                                            <Job key={`gc-job-lastline${i}`} className="flex-center">
-                                                {job[jobCounter + 1 + i]}
-                                            </Job>
-                                        ))}
+                                        }).map((_, i) => {
+                                            const index = jobCounter + 1 + i
+                                            const job = jobs[index]
+                                            const isLastJobIndex = lastJobIndex[job] == index
+                                            return (
+                                                <Job
+                                                    key={`gc-job-lastline${i}`} className="flex-center"
+                                                    style={{ color: isLastJobIndex ? "red" : "" }}
+                                                >
+                                                    {job == -1 ? "" : `P${job}`}
+                                                </Job>
+                                            )
+                                        })}
                                     </JobContainer>
                                     <TimeContainer>
                                         {Array.from({
@@ -181,11 +194,18 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                             return (
                                 <MultilineContainer key={`multiline-container-${ind}`}>
                                     <JobContainer>
-                                        {Array.from({ length: jobCounter + 1 }).map((_, i) => (
-                                            <Job key={`gc-job-firstline${i}`} className="flex-center">
-                                                {job[i]}
-                                            </Job>
-                                        ))}
+                                        {Array.from({ length: jobCounter + 1 }).map((_, i) => {
+                                            const job = jobs[i]
+                                            const isLastJobIndex = lastJobIndex[job] == i
+                                            return (
+                                                <Job
+                                                    key={`gc-job-firstline${i}`} className="flex-center"
+                                                    style={{ color: isLastJobIndex ? "red" : "" }}
+                                                >
+                                                    {job == -1 ? "" : `P${job}`}
+                                                </Job>
+                                            )
+                                        })}
                                     </JobContainer>
                                     <TimeContainer>
                                         {Array.from({ length: timeCounter + ind + 1 }).map(
@@ -210,11 +230,19 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                 <MultilineContainer key={`multiline-container-${ind}`}>
                                     <JobContainer>
                                         {Array.from({ length: maxTimeItemCount - 1 }).map(
-                                            (_, i) => (
-                                                <Job key={`gc-job-${i}-${ind}`} className="flex-center">
-                                                    {job[prevJobCounter + i + 1]}
-                                                </Job>
-                                            )
+                                            (_, i) => {
+                                                const index = prevJobCounter + i + 1
+                                                const job = jobs[index]
+                                                const isLastJobIndex = lastJobIndex[index]
+                                                return (
+                                                    <Job
+                                                        key={`gc-job-${i}-${ind}`} className="flex-center"
+                                                        style={{ color: isLastJobIndex ? "red" : "" }}
+                                                    >
+                                                        {job == -1 ? "" : `p${job}`}
+                                                    </Job>
+                                                )
+                                            }
                                         )}
                                     </JobContainer>
                                     <TimeContainer>
@@ -229,26 +257,34 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                         }
                     })}
                 </>
-            )}
-            {containerWidth !== null && containerWidth > timeContainerWidth && (
-                <>
-                    <JobContainer>
-                        {job.map((job, index) => (
-                            <Job key={`gc-job-${index}`} className="flex-center">
-                                P{job}
-                            </Job>
-                        ))}
-                    </JobContainer>
-                    <TimeContainer>
-                        {time.map((time, index) => (
-                            <Time key={`gc-time-${index}`} className="flex-center">
-                                {time}
-                            </Time>
-                        ))}
-                    </TimeContainer>
-                </>
-            )}
-        </Container>
+            )
+            }
+            {
+                containerWidth !== null && containerWidth > timeContainerWidth && (
+                    <>
+                        <JobContainer>
+                            {jobs.map((job, index) => {
+                                const isLastJobIndex = lastJobIndex[job] == index
+                                return (
+                                    <Job key={`gc-job-${index}`} className="flex-center"
+                                        style={{ color: isLastJobIndex ? "red" : "" }}
+                                    >
+                                        {job == -1 ? "" : `P${job}`}
+                                    </Job>
+                                )
+                            })}
+                        </JobContainer>
+                        <TimeContainer>
+                            {time.map((time, index) => (
+                                <Time key={`gc-time-${index}`} className="flex-center">
+                                    {time}
+                                </Time>
+                            ))}
+                        </TimeContainer>
+                    </>
+                )
+            }
+        </Container >
     );
 };
 
