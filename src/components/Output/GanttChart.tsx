@@ -17,7 +17,7 @@ const Title = styled.h2`
   font-size: 18px;
   ${media['600']`font-size: 16px;`}
   margin: 0 0 0.5rem 0;
-  color: #424242;
+  backgroundColor: #424242;
 `;
 
 const JobContainer = styled.div`
@@ -28,8 +28,8 @@ const Job = styled.div`
   width: 40px;
   height: 35px;
   border: 1px solid #8da6ff;
-  background-color: #edf4ff;
-  color: #424242;
+  background-backgroundColor: #edf4ff;
+  backgroundColor: #424242;
   ${media['600']`
     width: 32px;
     height: 27px;
@@ -54,7 +54,7 @@ const Time = styled.div`
     font-size: 14px;
   `}
   border: 1px solid #fff;
-  color: #444e5c;
+  backgroundColor: #444e5c;
 
   &:not(:last-child) {
     margin-right: -1px;
@@ -86,15 +86,17 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
 
     const time: number[] = [];
     const BLANK_CELL = -1
+    lastJobIndex[BLANK_CELL] = 9999
+
     ganttChartInfo.forEach((item, index) => {
         if (index === 0) {
             jobs.push(item.job);
             time.push(item.start, item.stop);
-            lastJobIndex[item.job] = index
+            lastJobIndex[item.job] = (lastJobIndex[item.job] || 0) + 1;
         } else if (time.slice(-1)[0] === item.start) {
             jobs.push(item.job);
             time.push(item.stop);
-            lastJobIndex[item.job] = index
+            lastJobIndex[item.job] = (lastJobIndex[item.job] || 0) + 1;
         } else if (time.slice(-1)[0] !== item.start) {
             jobs.push(BLANK_CELL, item.job);
             time.push(item.start, item.stop);
@@ -163,11 +165,11 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                         }).map((_, i) => {
                                             const index = jobCounter + 1 + i
                                             const job = jobs[index]
-                                            const isLastJobIndex = lastJobIndex[job] == index
+                                            const isLastJobIndex = !(--lastJobIndex[job])
                                             return (
                                                 <Job
                                                     key={`gc-job-lastline${i}`} className="flex-center"
-                                                    style={{ color: isLastJobIndex ? "red" : "" }}
+                                                    style={{ backgroundColor: isLastJobIndex ? "#00ff00" : "" }}
                                                 >
                                                     {job == -1 ? "" : `P${job}`}
                                                 </Job>
@@ -196,11 +198,11 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                     <JobContainer>
                                         {Array.from({ length: jobCounter + 1 }).map((_, i) => {
                                             const job = jobs[i]
-                                            const isLastJobIndex = lastJobIndex[job] == i
+                                            const isLastJobIndex = !(--lastJobIndex[job])
                                             return (
                                                 <Job
                                                     key={`gc-job-firstline${i}`} className="flex-center"
-                                                    style={{ color: isLastJobIndex ? "red" : "" }}
+                                                    style={{ backgroundColor: isLastJobIndex ? "#00ff00" : "" }}
                                                 >
                                                     {job == -1 ? "" : `P${job}`}
                                                 </Job>
@@ -233,11 +235,11 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                             (_, i) => {
                                                 const index = prevJobCounter + i + 1
                                                 const job = jobs[index]
-                                                const isLastJobIndex = lastJobIndex[job] == index
+                                                const isLastJobIndex = !(--lastJobIndex[job])
                                                 return (
                                                     <Job
                                                         key={`gc-job-${i}-${ind}`} className="flex-center"
-                                                        style={{ color: isLastJobIndex ? "red" : "" }}
+                                                        style={{ backgroundColor: isLastJobIndex ? "#00ff00" : "" }}
                                                     >
                                                         {job == -1 ? "" : `P${job}`}
                                                     </Job>
@@ -264,10 +266,10 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                     <>
                         <JobContainer>
                             {jobs.map((job, index) => {
-                                const isLastJobIndex = lastJobIndex[job] == index
+                                const isLastJobIndex = !(--lastJobIndex[job])
                                 return (
                                     <Job key={`gc-job-${index}`} className="flex-center"
-                                        style={{ color: isLastJobIndex ? "red" : "" }}
+                                        style={{ backgroundColor: isLastJobIndex ? "#00ff00" : "" }}
                                     >
                                         {job == -1 ? "" : `P${job}`}
                                     </Job>
