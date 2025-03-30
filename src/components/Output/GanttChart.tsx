@@ -233,7 +233,7 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                             (_, i) => {
                                                 const index = prevJobCounter + i + 1
                                                 const job = jobs[index]
-                                                const isLastJobIndex = lastJobIndex[job]
+                                                const isLastJobIndex = lastJobIndex[job] == index
                                                 return (
                                                     <Job
                                                         key={`gc-job-${i}-${ind}`} className="flex-center"
