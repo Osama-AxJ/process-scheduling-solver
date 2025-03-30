@@ -239,7 +239,7 @@ const GanttChart = ({ ganttChartInfo }: GanttChartProps) => {
                                                         key={`gc-job-${i}-${ind}`} className="flex-center"
                                                         style={{ color: isLastJobIndex ? "red" : "" }}
                                                     >
-                                                        {job == -1 ? "" : `p${job}`}
+                                                        {job == -1 ? "" : `P${job}`}
                                                     </Job>
                                                 )
                                             }
