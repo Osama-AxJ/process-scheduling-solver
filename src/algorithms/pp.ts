@@ -22,6 +22,7 @@ export const pp = (
 
     const solvedProcessesInfo: SolvedProcessesInfoType = [];
     const ganttChartInfo: GanttChartInfoType = [];
+    const firstStart: Record<number, number | undefined> = {};
 
     const readyQueue: {
         job: number;
@@ -89,6 +90,9 @@ export const pp = (
                 readyQueue.push(p);
                 const prevCurrentTime = currentTime;
                 currentTime += amount;
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: prevCurrentTime,
@@ -122,6 +126,9 @@ export const pp = (
                     }
                 });
 
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = processToExecute.at;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: processToExecute.at,
@@ -139,6 +146,9 @@ export const pp = (
                     }
                 });
 
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: prevCurrentTime,
@@ -166,6 +176,7 @@ export const pp = (
                 ft: currentTime,
                 tat: currentTime - processToExecute.at,
                 wat: currentTime - processToExecute.at - processToExecute.bt,
+                rt: firstStart[processToExecute.job]! - processToExecute.at,
             });
         }
     }

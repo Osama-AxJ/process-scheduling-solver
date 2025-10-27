@@ -19,6 +19,7 @@ export const rr = (
 
     const solvedProcessesInfo = [];
     const ganttChartInfo: GanttChartInfoType = [];
+    const firstStart: Record<number, number | undefined> = {};
 
     const readyQueue: {
         job: number;
@@ -55,6 +56,9 @@ export const rr = (
             const prevCurrentTime = currentTime;
             currentTime += remainingT;
 
+            if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
             ganttChartInfo.push({
                 job: processToExecute.job,
                 start: prevCurrentTime,
@@ -65,6 +69,9 @@ export const rr = (
             const prevCurrentTime = currentTime;
             currentTime += timeQuantum;
 
+            if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
             ganttChartInfo.push({
                 job: processToExecute.job,
                 start: prevCurrentTime,
@@ -102,6 +109,7 @@ export const rr = (
                 ft: currentTime,
                 tat: currentTime - processToExecute.at,
                 wat: currentTime - processToExecute.at - processToExecute.bt,
+                rt: firstStart[processToExecute.job]! - processToExecute.at,
             });
         }
     }

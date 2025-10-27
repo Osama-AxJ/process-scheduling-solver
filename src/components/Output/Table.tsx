@@ -70,6 +70,7 @@ type TableProps = {
         ft: number;
         tat: number;
         wat: number;
+        rt: number;
     }[];
 };
 
@@ -80,12 +81,16 @@ const Table = ({ solvedProcessesInfo }: TableProps) => {
     const numberOfProcesses = solvedProcessesInfo.length;
     const turnaoundTime = solvedProcessesInfo.map((process) => process.tat);
     const waitingTime = solvedProcessesInfo.map((process) => process.wat);
+    const responseTime = solvedProcessesInfo.map((prosess) => prosess.rt);
 
     const totalTAT = total(turnaoundTime);
     const averageTAT = totalTAT / numberOfProcesses;
 
     const totalWAT = total(waitingTime);
     const averageWAT = totalWAT / numberOfProcesses;
+
+    const totalRES = total(responseTime);
+    const averageRES = totalRES / numberOfProcesses;
 
     return (
         <TableWrapper>
@@ -98,6 +103,7 @@ const Table = ({ solvedProcessesInfo }: TableProps) => {
                         <HeaderCell>Finish Time</HeaderCell>
                         <HeaderCell>Turnaround Time</HeaderCell>
                         <HeaderCell>Waiting Time</HeaderCell>
+                        <HeaderCell>Response Time</HeaderCell>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,6 +115,7 @@ const Table = ({ solvedProcessesInfo }: TableProps) => {
                             <td>{item.ft}</td>
                             <td>{item.tat}</td>
                             <td>{item.wat}</td>
+                            <td>{item.rt}</td>
                         </tr>
                     ))}
                     {
@@ -121,6 +128,9 @@ const Table = ({ solvedProcessesInfo }: TableProps) => {
                             </td>
                             <td>
                                 {totalWAT} / {numberOfProcesses} = {precisionRound(averageWAT, 3)}
+                            </td>
+                            <td>
+                                {totalRES} / {numberOfProcesses} = {precisionRound(averageRES, 3)}
                             </td>
                         </tr>
                     }

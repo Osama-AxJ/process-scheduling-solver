@@ -19,6 +19,7 @@ export type SolvedProcessesInfoType = {
     ft: number;
     tat: number;
     wat: number;
+    rt: number;
 }[];
 
 export const solve = (

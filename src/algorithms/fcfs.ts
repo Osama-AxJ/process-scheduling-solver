@@ -17,19 +17,22 @@ export const fcfs = (arrivalTime: number[], burstTime: number[]) => {
             return 0;
         });
 
+    const startTime: number[] = [];
     const finishTime: number[] = [];
     const ganttChartInfo: GanttChartInfoType = [];
 
     const solvedProcessesInfo = processesInfo.map((process, index) => {
         if (index === 0 || process.at > finishTime[index - 1]) {
-            finishTime[index] = process.at + process.bt;
+            startTime[index] = process.at,
+            finishTime[index] = process.at + process.bt;     
 
             ganttChartInfo.push({
                 job: process.job,
-                start: process.at,
+                start: startTime[index],
                 stop: finishTime[index],
             });
         } else {
+            startTime[index] = finishTime[index - 1];
             finishTime[index] = finishTime[index - 1] + process.bt;
 
             ganttChartInfo.push({
@@ -44,6 +47,7 @@ export const fcfs = (arrivalTime: number[], burstTime: number[]) => {
             ft: finishTime[index],
             tat: finishTime[index] - process.at,
             wat: finishTime[index] - process.at - process.bt,
+            rt: startTime[index] - process.at,
         };
     });
 

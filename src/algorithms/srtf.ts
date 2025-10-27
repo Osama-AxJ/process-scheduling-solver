@@ -22,6 +22,7 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
     const readyQueue = [];
     let currentTime = processesInfo[0].at;
     const unfinishedJobs = [...processesInfo];
+    const firstStart: Record<number, number | undefined> = {};
 
     const remainingTime = processesInfo.reduce((acc, process) => {
         acc[process.job] = process.bt;
@@ -81,6 +82,9 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
                 readyQueue.push(p);
                 const prevCurrentTime = currentTime;
                 currentTime += amount;
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: prevCurrentTime,
@@ -115,6 +119,9 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
                     }
                 });
 
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = processToExecute.at;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: processToExecute.at,
@@ -132,6 +139,9 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
                     }
                 });
 
+                if (firstStart[processToExecute.job] === undefined){
+                    firstStart[processToExecute.job] = prevCurrentTime;
+                }
                 ganttChartInfo.push({
                     job: processToExecute.job,
                     start: prevCurrentTime,
@@ -159,6 +169,7 @@ export const srtf = (arrivalTime: number[], burstTime: number[]) => {
                 ft: currentTime,
                 tat: currentTime - processToExecute.at,
                 wat: currentTime - processToExecute.at - processToExecute.bt,
+                rt: firstStart[processToExecute.job]! - processToExecute.at,
             });
         }
     }

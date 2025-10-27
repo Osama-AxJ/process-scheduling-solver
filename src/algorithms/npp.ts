@@ -30,12 +30,14 @@ export const npp = (
     for (let i = 0; i < processesInfo.length; i++) {
         if (i === 0) {
             readyQueue.push(processesInfo[0]);
+            const start = processesInfo[0].at;
             finishTime.push(processesInfo[0].at + processesInfo[0].bt);
             solvedProcessesInfo.push({
                 ...processesInfo[0],
                 ft: finishTime[0],
                 tat: finishTime[0] - processesInfo[0].at,
                 wat: finishTime[0] - processesInfo[0].at - processesInfo[0].bt,
+                rt: start - processesInfo[0].at,
             });
 
             processesInfo.forEach((p) => {
@@ -49,7 +51,7 @@ export const npp = (
 
             ganttChartInfo.push({
                 job: processesInfo[0].job,
-                start: processesInfo[0].at,
+                start,
                 stop: finishTime[0],
             });
         } else {
@@ -65,7 +67,7 @@ export const npp = (
                         if (a.at > b.at) return 1;
                         if (a.at < b.at) return -1;
                         if (a.priority > b.priority) return 1;
-                        if (a.priority < a.priority) return -1;
+                        if (a.priority < b.priority) return -1;
                         return 0;
                     });
                 readyQueue.push(unfinishedJobs[0]);
@@ -84,7 +86,10 @@ export const npp = (
 
             const previousFinishTime = finishTime[finishTime.length - 1];
 
+            let start: number;
+
             if (processToExecute.at > previousFinishTime) {
+                start = processToExecute.at;
                 finishTime.push(processToExecute.at + processToExecute.bt);
                 const newestFinishTime = finishTime[finishTime.length - 1];
                 ganttChartInfo.push({
@@ -93,11 +98,12 @@ export const npp = (
                     stop: newestFinishTime,
                 });
             } else {
+                start = previousFinishTime;
                 finishTime.push(previousFinishTime + processToExecute.bt);
                 const newestFinishTime = finishTime[finishTime.length - 1];
                 ganttChartInfo.push({
                     job: processToExecute.job,
-                    start: previousFinishTime,
+                    start,
                     stop: newestFinishTime,
                 });
             }
@@ -109,6 +115,7 @@ export const npp = (
                 ft: newestFinishTime,
                 tat: newestFinishTime - processToExecute.at,
                 wat: newestFinishTime - processToExecute.at - processToExecute.bt,
+                rt: start - processToExecute.at,
             });
 
             processesInfo.forEach((p) => {
