@@ -62,7 +62,7 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
                         if (a.at > b.at) return 1;
                         if (a.at < b.at) return -1;
                         if (a.bt > b.bt) return 1;
-                        if (a.bt < a.bt) return -1;
+                        if (a.bt < b.bt) return -1;
                         return 0;
                     });
                 readyQueue.push(unfinishedJobs[0]);
@@ -83,7 +83,7 @@ export const sjf = (arrivalTime: number[], burstTime: number[]) => {
             let start: number;
 
             if (processToExecute.at > previousFinishTime) {
-                processToExecute.at;
+                start = processToExecute.at;
                 finishTime.push(processToExecute.at + processToExecute.bt);
                 const newestFinishTime = finishTime[finishTime.length - 1];
                 ganttChartInfo.push({

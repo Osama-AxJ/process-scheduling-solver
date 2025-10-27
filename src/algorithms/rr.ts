@@ -5,6 +5,9 @@ export const rr = (
     burstTime: number[],
     timeQuantum: number
 ) => {
+    if (timeQuantum <= 0) {
+        throw new Error('Round Robin requires timeQuantum > 0');
+    }
     const processesInfo = arrivalTime
         .map((item, index) => ({
             job: index,
