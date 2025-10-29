@@ -4,7 +4,6 @@
 
 [![process-scheduling-solver](https://github.com/user-attachments/assets/139f008d-3482-4cd1-963d-c3c8b6b2e9dd)](https://process-scheduling-solver-delta.vercel.app/)
 
-
 Get it here: [process scheduling solver](https://process-scheduling-solver-delta.vercel.app/)
 
 ## Supported algorithms
@@ -13,7 +12,6 @@ Get it here: [process scheduling solver](https://process-scheduling-solver-delta
 - Shortest Job First / SJF (non-preemptive)
 - Shortest Remaining Time First / SRTF (preemptive)
 - Round-Robin / RR
-
 - Priority (non-preemptive)
 - Priority (preemptive)
 
