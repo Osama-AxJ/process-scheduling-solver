@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { media } from '../GlobalStyle.css';
 
 const TableWrapper = styled.div`
-  overflow: auto;
+  overflow: visible;
   max-width: 100%;
   margin: 0px auto 20px auto;
   ${media['600']`
+  overflow: auto;
   margin: 0px auto 0px auto;
   `}
   background:
@@ -52,7 +53,6 @@ const HeaderCell = styled.th`
   font-weight: 500;
   height: 40px;
   ${media['600']`height: 35px`};
-  white-space: nowrap;
   color: #6d7187;
   background-color: #f9f9fb;
 `;
